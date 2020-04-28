@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS users(
+	id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+	name TEXT KEY NOT NULL, 
+	last_msg timestamp);
+
+
+SELECT sender, message FROM messages
+WHERE (sender = 'Пятигорец Иван' AND recipient = 'Пятигорец Алексей') OR (sender = 'Пятигорец Алексей' AND recipient = 'Пятигорец Иван');
