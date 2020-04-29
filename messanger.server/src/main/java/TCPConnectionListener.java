@@ -21,5 +21,10 @@ public interface TCPConnectionListener {
 
     void setFlagTrueById(String id);
     void setFlagTrueByTime(String user1, String user2, String time);
+
+    boolean signUp(String login, String password);
+
+    boolean logIn(String login, String password);
+
 //    void searchFriends(String recipient, String desired);
 }

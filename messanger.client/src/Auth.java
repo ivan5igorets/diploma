@@ -303,6 +303,8 @@
 //}
 //
 //
+import org.w3c.dom.ls.LSOutput;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -315,23 +317,27 @@ public class Auth extends JFrame {
 
     private JPanel panel1;
     private JPanel panel2;
+    private ClientConnectionListener eventListener;
 
 
-    public Auth() {
+    public Auth(Connection connection) {
 
         // проверка авторизации пользователя, если авторизирован то запускаем клиент
         // если не авторизирован то запукаем авторизацию
 
         // нужно изменить
-        if( false /* если пользователь авторизирован */) {
+        if( ClientDB.getInstance().checkAuth() /* если пользователь авторизирован */) {
             // запускаем клиент с именем пользователя
+            System.out.println("запуск клиента");
+            eventListener.runClient();
+
             return;
         } else {
-            initAuth();
+            initAuth(connection);
         }
     }
 
-    private void initAuth() {
+    private void initAuth(Connection connection) {
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
@@ -344,13 +350,13 @@ public class Auth extends JFrame {
         panel1 = new JPanel();
         setTitle("Авторизация");
         getContentPane().add(panel1);
-        initPanelLogIn(panel1);
+        initPanelLogIn(panel1,connection);
 
         panel2 = new JPanel();
-        initPanelSignUp(panel2);
+        initPanelSignUp(panel2, connection);
     }
 
-    private void initPanelLogIn(JPanel panel) {
+    private void initPanelLogIn(JPanel panel, Connection connection) {
 
         final JLabel lblEnterLogin = new JLabel("Введите логин");
         final JLabel lblEnterPass1 = new JLabel("Введите пароль");
@@ -425,12 +431,16 @@ public class Auth extends JFrame {
                 }
 
 
-
-
                 // тут должно быть отправление на клиент
-//                connection.sendString("/REGISTRATION");
-//                connection.sendString(tfLogin.getText());
-//                connection.sendString(tfPassword1.getText());
+                connection.sendString("/LOG_IN");
+                connection.sendString(tfLogin.getText());
+
+                String password = new String(passwordField.getPassword());
+
+                System.out.println(tfLogin.getText());
+                System.out.println(password);
+
+                connection.sendString(password);
 
 
                 // получить ответ с сервера
@@ -469,7 +479,7 @@ public class Auth extends JFrame {
 
     }
 
-    private void initPanelSignUp(JPanel panel) {
+    private void initPanelSignUp(JPanel panel, Connection connection) {
 
         final JLabel lblEnterLogin = new JLabel("Введите логин");
         final JLabel lblEnterPass1 = new JLabel("Введите пароль");
@@ -566,9 +576,9 @@ public class Auth extends JFrame {
                 }
 
                 // тут должно быть отправление на клиент
-//                connection.sendString("/REGISTRATION");
-//                connection.sendString(tfLogin.getText());
-//                connection.sendString(tfPassword1.getText());
+                connection.sendString("/SIGN_UP");
+                connection.sendString(tfLogin.getText());
+                connection.sendString(tfPassword1.getText());
 
 
                 // нужно получить результат регистрации пользователя и сообщить об этом пользователю
@@ -665,7 +675,7 @@ public class Auth extends JFrame {
         }).start();
     }
 
-    private void showHind(String promptWord, JPanel panel) {
+    public void showHind(String promptWord, JPanel panel) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -700,7 +710,6 @@ public class Auth extends JFrame {
 
 
     public static void main(String[] args) {
-        new Auth();
 
 //        char[] arr = new char[6];
 //        arr[0] = '1';

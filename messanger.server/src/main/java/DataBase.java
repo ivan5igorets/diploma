@@ -292,7 +292,6 @@ public class DataBase {
         }
     }
 
-
     // разобраться почему не работает
     public void setFlagTrueByTime(String user1, String user2, String time) {
         System.out.println("time: " + time);
@@ -312,6 +311,81 @@ public class DataBase {
 
     }
 
+
+    // нужно переписать, выдаёт ошибку когда нет такой записи
+    public boolean isExist(String name) {
+        boolean result = false;
+
+        try (PreparedStatement statement = connection.prepareStatement("SELECT EXISTS( " +
+                "SELECT name " +
+                "FROM users " +
+                "WHERE name = (?) " +
+                "LIMIT 1)")) {
+            statement.setString(1, name);
+
+            final ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                result = resultSet.getBoolean(1);
+            }
+
+            System.out.println(result);
+
+            return result;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean newUserRegistration(String login, String password) {
+
+        try (PreparedStatement statement = connection.prepareStatement(
+                "INSERT INTO users(name, password) " +
+                        "VALUES ((?), (?))")) {
+
+//             нужно реализовать поиск id пользователя
+
+            statement.setString(1, login);
+            statement.setString(2, password);
+
+            // выполнение запроса
+            final long resultSet = statement.executeUpdate();
+
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+    public String[] logIn(String login) {
+        String[] arr = null;
+
+        try (PreparedStatement statement = connection.prepareStatement(
+                "SELECT name, password " +
+                        "FROM users " +
+                        "WHERE name = (?)")) {
+
+//             нужно реализовать поиск id пользователя
+            statement.setString(1, login);
+
+            // выполнение запроса
+            final ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                arr = new String[2];
+                arr[0] = resultSet.getString(1);
+                arr[1] = resultSet.getString(2);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return arr;
+        }
+
+        return arr;
+    }
 //    public void getFriends(String name) {
 //
 //        // функция делающаяя запрос в БД, результатом которого является список пользователей, чьи имемена содержат
@@ -330,8 +404,15 @@ public class DataBase {
 
         DataBase app = DataBase.getInstance();
 
+        String[] arr = app.logIn("Пятигорец Иван");
+        System.out.println(arr[0]);
+        System.out.println(arr[1]);
 
-        app.setFlagTrueByTime("Пятигорец Иван", "Пятигорец Алексей", "2020-04-11 19:19:36.36498");
+//        System.out.println(app.isExist("Пятигорец Иван"));
+
+//        System.out.println(app.newUserRegistration("kaban", "123456qwerty"));
+
+//        app.setFlagTrueByTime("Пятигорец Иван", "Пятигорец Алексей", "2020-04-11 19:19:36.36498");
 
 //        ArrayList<String> arrayList = new ArrayList();
 //

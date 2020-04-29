@@ -115,6 +115,35 @@ public class Server implements TCPConnectionListener{
         dataBase.setFlagTrueByTime(user1, user2, time);
     }
 
+
+    // протестировать
+    @Override
+    public boolean signUp(String login, String password) {
+        // проверить существование пользователя с данным именем(login)
+        if (!dataBase.isExist(login)) {
+            // регистрация пользоватея и отправка на клиент (true)
+            if (dataBase.newUserRegistration(login, password)) {
+                // отправить на клиент true
+                return true;
+            }
+        }
+            // отправляем на клиент false
+            return false;
+    }
+
+    @Override
+    public boolean logIn(String login, String password) {
+
+        if (dataBase.isExist(login)) {
+            // сравнить авпроль и логин
+            String[] arr = dataBase.logIn(login);
+            if (arr[0].equals(login) && arr[1].equals(password)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 //    @Override
 //    public void getFriends(String recipient) {
 //        System.out.println("getFriends Server");

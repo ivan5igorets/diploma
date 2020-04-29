@@ -26,8 +26,8 @@ public class Client extends JFrame implements ClientConnectionListener {
 
     private final JTextArea log = new JTextArea();
     private final JScrollPane scrLog = new JScrollPane(log);
-    private final JLabel lblNickname;
-    private final JLabel lblinterlocutor;
+    private JLabel lblNickname;
+    private JLabel lblinterlocutor;
     private final JTextField fieldInput = new JTextField();
     private final JTextField fieldSearch = new JTextField();
 
@@ -47,10 +47,34 @@ public class Client extends JFrame implements ClientConnectionListener {
 
     private Connection connection;
 
+
+
+    // нужно переписать с учётом изменений "onConnectionReady"
     private Client(String name) {
 
+        try {
+            connection = new Connection(this, IP_ADDR, PORT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         dataBase.open();
 
+
+        new Auth(connection);
+
+
+    }
+
+
+    // нужно вынести из кнлиента весь код в отдельную функцию
+    @Override
+    public void runClient(String name) {
+//        new Client()
+        initClient(name);
+        System.out.println("run client");
+    }
+
+    private void initClient(String name) {
         setTitle(name);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(WIDTH, HEIGHT);
@@ -158,21 +182,12 @@ public class Client extends JFrame implements ClientConnectionListener {
 
         setVisible(true);
 
-        try {
 
-            printFriendList();
-            // запись подключения
-            connection = new Connection(this, IP_ADDR, PORT);
-            connection.sendString(lblNickname.getText());
+        printFriendList();
+        // запись подключения
 
-
-            // получение списка сообщений
-             getListOfMessages();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        // получение списка сообщений
+        getListOfMessages();
     }
 
     private synchronized void printMsg(String sender, String recipient, String msg) {

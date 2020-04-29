@@ -10,4 +10,5 @@ public interface ClientConnectionListener {
 
     void printPossibleFriend(String name);
     void setStatusFriendSearchFalse();
+    void runClient(String name);
 }

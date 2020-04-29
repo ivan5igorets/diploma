@@ -345,26 +345,25 @@ public class ClientDB {
     }
 
     // для авторизации
-    public String checkAuth() {
-        try {
-            Statement statement = connection.createStatement();
+    public boolean checkAuth() {
+        boolean result = false;
+        try (PreparedStatement statement = connection.prepareStatement("SELECT EXISTS( " +
+                "SELECT name " +
+                "FROM users " +
+                "WHERE id = (?) " +
+                "LIMIT 1)")) {
+            statement.setInt(1, 1);
 
-            String query =
-                    "SELECT name " +
-                            "FROM account;";
-
-            ResultSet resultSet = statement.executeQuery(query);
-            String name = null;
+            final ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                name = resultSet.getString(1);
+                result = resultSet.getBoolean(1);
             }
-            return name;
-
+//            System.out.println(result);
+            return result;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            return null;
-        } finally {
+            e.printStackTrace();
+            return result;
         }
     }
 
@@ -420,6 +419,26 @@ public class ClientDB {
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("logOut -");
+        }
+    }
+
+    public String getUserName() {
+       String result = null;
+        try (PreparedStatement statement = connection.prepareStatement(
+                "SELECT name " +
+                "FROM account " +
+                "WHERE id = (?) ")) {
+            statement.setInt(1, 1);
+
+            final ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                result = resultSet.getString(1);
+            }
+            return result;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return result;
         }
     }
 
@@ -517,8 +536,9 @@ public class ClientDB {
 
         ClientDB dataBase = ClientDB.getInstance();
 
+        System.out.println(dataBase.checkAuth());
 
-        dataBase.logOut();
+//        dataBase.logOut();
 //
 //        System.out.println(dataBase.checkAuth());
 //

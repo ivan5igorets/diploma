@@ -44,9 +44,12 @@ public class Connection {
         switch (opr) {
             case "/NEW_MESSAGE": eventListener.receivingMessage(in.readLine(), in.readLine(), in.readLine(), in.readLine(), in.readLine(), in.readLine());
                 break;
-//            case "/LIST_MESSAGES": gettingListOfMessages();
-//                break;
             case "/POSSIBLE_FRIENDS": gettingListOfPossibleFriends();
+                break;
+            case "/RUN_CLIENT": eventListener.runClient();
+                break;
+            // продумать релизауию (не знаю как сделать)
+            case "/SIGN_UP_ERROR": System.out.println("должно нарисовать подсказку на фрэйме и подсветить клавиши");
                 break;
         }
     }

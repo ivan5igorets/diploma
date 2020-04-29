@@ -26,12 +26,6 @@ public class TCPConnection {
             @Override
             public void run() {
                 try {
-
-                    // при инициализации сразу посылается логин
-                    name = in.readLine();
-                    eventListener.onConnectionReady(name, TCPConnection.this);
-
-
                     while (!rxThread.isInterrupted()) {
                         operation(in.readLine());
                     }
@@ -48,6 +42,8 @@ public class TCPConnection {
 
     public void operation(String opr) throws IOException {
         switch (opr) {
+            case "/ON_CONNECTION": eventListener.onConnectionReady(in.readLine(), TCPConnection.this);
+                break;
             case "/NEW_MESSAGE": eventListener.addNewMessage(in.readLine(), in.readLine(), in.readLine());
                 break;
             case "/GET_LIST_OF_MESSAGES": eventListener.listOfMessages(in.readLine(), in.readLine());
@@ -57,6 +53,10 @@ public class TCPConnection {
             case "/SET_FLAG_TRUE_BY_ID": eventListener.setFlagTrueById(in.readLine());
                 break;
             case "/SET_FLAG_TRUE_BY_TIME": eventListener.setFlagTrueByTime(in.readLine(), in.readLine(), in.readLine());
+                break;
+            case "/SIGN_UP": signUp(in.readLine(), in.readLine());
+                break;
+            case "/LOG_IN": logIn(in.readLine(), in.readLine());
                 break;
         }
     }
@@ -92,6 +92,24 @@ public class TCPConnection {
         }catch (IOException e) {
             eventListener.onException(TCPConnection.this, e);
 //            disconnect();
+        }
+    }
+
+    // протестировать
+    private void signUp(String login, String password) {
+        if (eventListener.signUp(login, password)) {
+        sendString("/RUN_CLIENT");
+        } else {
+        sendString("/SIGN_UP_ERROR");
+        }
+    }
+
+    //
+    private void logIn(String login, String password) {
+        if (eventListener.logIn(login, password)) {
+            sendString("/RUN_CLIENT");
+        } else {
+            sendString("/LOG_IN_ERROR");
         }
     }
 
