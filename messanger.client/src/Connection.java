@@ -48,8 +48,9 @@ public class Connection {
                 break;
             case "/RUN_CLIENT": eventListener.runClient();
                 break;
-            // продумать релизауию (не знаю как сделать)
-            case "/SIGN_UP_ERROR": System.out.println("должно нарисовать подсказку на фрэйме и подсветить клавиши");
+            case "/SIGN_UP_ERROR": eventListener.signUpError();
+                break;
+            case "/LOG_IN_ERROR": eventListener.logInError();
                 break;
         }
     }

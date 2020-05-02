@@ -347,7 +347,8 @@ public class ClientDB {
     // для авторизации
     public boolean checkAuth() {
         boolean result = false;
-        try (PreparedStatement statement = connection.prepareStatement("SELECT EXISTS( " +
+        try (PreparedStatement statement = connection.prepareStatement(
+                "SELECT EXISTS( " +
                 "SELECT name " +
                 "FROM users " +
                 "WHERE id = (?) " +
@@ -388,8 +389,12 @@ public class ClientDB {
 
     public void logOut() {
 
+        close();
+
+        open();
+
         try (PreparedStatement statement = connection.prepareStatement(
-                " DROP TABLE IF EXISTS users")) {
+                "DROP TABLE IF EXISTS users")) {
 
             statement.executeUpdate();
             System.out.println("logOut +");
@@ -400,7 +405,7 @@ public class ClientDB {
         }
 
         try (PreparedStatement statement = connection.prepareStatement(
-                " DROP TABLE IF EXISTS messages")) {
+                "DROP TABLE IF EXISTS messages")) {
 
             statement.executeUpdate();
             System.out.println("logOut +");
@@ -411,7 +416,7 @@ public class ClientDB {
         }
 
         try (PreparedStatement statement = connection.prepareStatement(
-                " DROP TABLE IF EXISTS account")) {
+                "DROP TABLE IF EXISTS account")) {
 
             statement.executeUpdate();
             System.out.println("logOut +");
@@ -420,6 +425,9 @@ public class ClientDB {
             e.printStackTrace();
             System.out.println("logOut -");
         }
+
+        // нужно вызвать для того, что-бы были соданы новые таблицы(пустые)
+        open();
     }
 
     public String getUserName() {
@@ -523,13 +531,13 @@ public class ClientDB {
     }
 
 
-//    public void close() {
-//        try {
-//            connection.close();
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        }
-//    }
+    public void close() {
+        try {
+            connection.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
 
     public static void main(String[] args) {
@@ -538,7 +546,9 @@ public class ClientDB {
 
         System.out.println(dataBase.checkAuth());
 
-//        dataBase.logOut();
+        dataBase.logOut();
+
+//        System.out.println(dataBase.checkAuth());
 //
 //        System.out.println(dataBase.checkAuth());
 //

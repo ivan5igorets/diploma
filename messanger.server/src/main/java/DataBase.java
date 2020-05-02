@@ -404,9 +404,11 @@ public class DataBase {
 
         DataBase app = DataBase.getInstance();
 
-        String[] arr = app.logIn("Пятигорец Иван");
-        System.out.println(arr[0]);
-        System.out.println(arr[1]);
+
+
+//        String[] arr = app.logIn("Пятигорец Иван");
+//        System.out.println(arr[0]);
+//        System.out.println(arr[1]);
 
 //        System.out.println(app.isExist("Пятигорец Иван"));
 

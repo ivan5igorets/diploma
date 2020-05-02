@@ -1,13 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class Client extends JFrame implements ClientConnectionListener {
+public class Client implements ClientConnectionListener {
 
     private static final String IP_ADDR = "127.0.0.1";
     private static final int PORT = 8189;
@@ -19,27 +16,50 @@ public class Client extends JFrame implements ClientConnectionListener {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new Client("Пятигорец Иван");
+                new Client();
             }
         });
     }
 
+    // инициализация компонентов для Авторизации/Регестрации
+    JFrame client = new JFrame();
+    JFrame auth = new JFrame();
+    private JPanel authPanel1;
+    private JButton btnLogIn;
+    private JTextField tfLogin1;
+    private JPasswordField passwordField;
+
+
+    private JPanel authPanel2;
+    private JTextField tfLogin2;
+    private JTextField tfPassword1;
+    private JTextField tfPassword2;
+    private JButton btnSignUp;
+
+
+
+
+    // инициалиация компонентов для Клиента
+    private String nameOfUser;
+
     private final JTextArea log = new JTextArea();
     private final JScrollPane scrLog = new JScrollPane(log);
     private JLabel lblNickname;
-    private JLabel lblinterlocutor;
+    private JLabel lblInterlocutor;
     private final JTextField fieldInput = new JTextField();
+
     private final JTextField fieldSearch = new JTextField();
+    private final String searchHint = "поиск собеседника";
 
     // панель собственного имени и имени собеседника
     private final JPanel upPanel = new JPanel();
-
-    // panel LEFT/friends
     private final JPanel leftPanel = new JPanel();
+    private final JButton btnLogOut = new JButton("выйти");
 
     private final DefaultListModel dfm = new DefaultListModel();
     private final JList listFriends = new JList(dfm);
     private final JScrollPane myScrollPaneList = new JScrollPane(listFriends);
+
 
     private boolean statusFriendSearch = false;
 
@@ -50,7 +70,7 @@ public class Client extends JFrame implements ClientConnectionListener {
 
 
     // нужно переписать с учётом изменений "onConnectionReady"
-    private Client(String name) {
+    private Client() {
 
         try {
             connection = new Connection(this, IP_ADDR, PORT);
@@ -59,37 +79,465 @@ public class Client extends JFrame implements ClientConnectionListener {
         }
         dataBase.open();
 
+        boolean bol = dataBase.checkAuth();
+        System.out.println(bol);
 
-        new Auth(connection);
+        initAuth();
+
+        if (bol) {
+            nameOfUser = dataBase.getUserName();
+            initClient(nameOfUser);
+        } else {
+            auth.setVisible(true);
+        }
 
 
     }
 
 
-    // нужно вынести из кнлиента весь код в отдельную функцию
+
+    private void initAuth() {
+
+
+
+        auth.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        auth.setVisible(true);
+        auth.setSize(new Dimension(WIDTH, HEIGHT));
+        auth.setLocationRelativeTo(null);
+        auth.setResizable(false);
+        auth.setVisible(false);
+
+
+        authPanel1 = new JPanel();
+        auth.setTitle("Авторизация");
+
+        auth.getContentPane().add(authPanel1);
+        initPanelLogIn(authPanel1, connection);
+
+        authPanel2 = new JPanel();
+        initPanelSignUp(authPanel2, connection);
+
+        auth.validate();
+        auth.repaint();
+    }
+
+    private void initPanelLogIn(JPanel panel, Connection connection) {
+
+        final JLabel lblEnterLogin = new JLabel("Введите логин");
+        final JLabel lblEnterPass1 = new JLabel("Введите пароль");
+        final JLabel lblPrompt = new JLabel("нет аккаунта?");
+
+//        JTextField tfLogin;
+//        JPasswordField passwordField;
+
+        JButton btnBack;
+
+        panel.setLayout(null);
+        panel.add(lblEnterLogin);
+        lblEnterLogin.setBounds(450, 150, 100, 30);
+
+        panel.add(lblEnterLogin);
+        lblEnterLogin.setBounds(450, 150, 100, 30);
+
+        tfLogin1 = new JTextField();
+        panel.add(tfLogin1);
+        tfLogin1.setBounds(400,185,200,30);
+
+        panel.add(lblEnterPass1);
+        lblEnterPass1.setBounds(450, 220, 100, 30);
+
+        passwordField = new JPasswordField();
+        panel.add(passwordField);
+        passwordField.setBounds(400,250,200,30);
+
+
+
+        btnLogIn = new JButton("войти");
+        panel.add(btnLogIn);
+        btnLogIn.setBounds(400, 290, 200, 30);
+        btnLogIn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if (tfLogin1.getText().equals("") || passwordField.getPassword().equals("") ) {
+                    fieldTinting(tfLogin1.getBackground(), tfLogin1);
+                    fieldTinting(tfLogin1.getBackground(), passwordField);
+                    return;
+                }
+
+                if(tfLogin1.getText().length() < 5) {
+                    showHind("Количество символов имени должно быть не меньше 5", authPanel1);
+                    return;
+                }
+
+
+                // проверяет количество символов в имени
+                if ((tfLogin1.getText().length() > 30)) {
+                    showHind("Количество символов имени не должно привышать 30", authPanel1);
+                    return;
+                }
+
+                // проверяет существование подстроки состоящей из пробела " "
+                if (tfLogin1.getText().indexOf(" ") != -1) {
+                    showHind("Вместо пробела используйте '_'", authPanel1);
+                    return;
+                }
+
+                if (passwordField.getPassword().length < 6 ) {
+                    showHind("Пароль должен составлять не меньше 6 символов", authPanel1);
+                    return;
+                }
+
+
+                if (spaceCharacterSearch(passwordField.getPassword())) {
+                    showHind("Пробел является запрещённым символом", authPanel1);
+                    return;
+                }
+
+
+                // тут должно быть отправление на клиент
+                connection.sendString("/LOG_IN");
+                nameOfUser = tfLogin1.getText();
+                connection.sendString(nameOfUser);
+
+                String password = new String(passwordField.getPassword());
+
+
+
+                connection.sendString(password);
+
+                System.out.println(tfLogin1.getText());
+                System.out.println(password);
+
+                tfLogin1.setText("");
+                passwordField.setText("");
+
+                // получить ответ с сервера
+//                if (false) {
+//                    // запускаем клиент
+//                } else {
+//                    showHind("ошибка авторизации", authPanel1);
+//                    paintOverTheButton(btnRegistration);
+//                }
+
+            }
+        });
+
+
+
+        panel.add(lblPrompt);
+        lblPrompt.setBounds(455, 370, 100,30);
+
+        btnBack = new JButton("зарегестрироваться");
+        panel.add(btnBack);
+        btnBack.setBounds(400,400,200,30);
+        btnBack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                auth.getContentPane().removeAll();
+                auth.getContentPane().add(authPanel2);
+                auth.setTitle("Регистрация");
+
+                auth.validate();
+                auth.repaint();
+
+            }
+        });
+
+        panel.setVisible(true);
+
+    }
+
+    private void initPanelSignUp(JPanel panel, Connection connection) {
+
+        final JLabel lblEnterLogin = new JLabel("Введите логин");
+        final JLabel lblEnterPass1 = new JLabel("Введите пароль");
+        final JLabel lblEnterPass2 = new JLabel("Введите пароль повторно");
+
+
+
+        JButton btnBack;
+
+        panel.setLayout(null);
+        panel.add(lblEnterLogin);
+        lblEnterLogin.setBounds(450, 150, 100, 30);
+
+        panel.add(lblEnterLogin);
+        lblEnterLogin.setBounds(450, 150, 100, 30);
+
+        tfLogin2 = new JTextField();
+        panel.add(tfLogin2);
+        tfLogin2.setBounds(400,185,200,30);
+
+        panel.add(lblEnterPass1);
+        lblEnterPass1.setBounds(450, 220, 100, 30);
+
+        tfPassword1 = new JTextField();
+        panel.add(tfPassword1);
+        tfPassword1.setBounds(400,250,200,30);
+
+
+        panel.add(lblEnterPass2);
+        lblEnterPass2.setBounds(420, 285, 160, 30);
+
+        tfPassword2 = new JTextField();
+        panel.add(tfPassword2);
+        tfPassword2.setBounds(400,315,200,30);
+
+
+        btnSignUp = new JButton("Регистрация");
+        panel.add(btnSignUp);
+        btnSignUp.setBounds(400, 350, 200, 30);
+        btnSignUp.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                String name = tfLogin2.getText();
+
+                if (name.equals("") || tfPassword1.getText().equals("") || tfPassword2.getText().equals("")) {
+
+                    fieldTinting(tfLogin2.getBackground(), tfLogin2);
+                    fieldTinting(tfLogin2.getBackground(), tfPassword1);
+                    fieldTinting(tfLogin2.getBackground(), tfPassword2);
+
+                    return;
+                }
+
+                // удаляет пробелы в начале и в конце строки
+                name = name.trim();
+
+                // в случае сработываения ифов должны выскакивать подсказки
+                if(name.length() < 5) {
+                    showHind("Количество символов имени должно быть не меньше 5", authPanel2);
+                    return;
+                }
+
+
+                // проверяет количество символов в имени
+                if ((name.length() > 30)) {
+                    showHind("Количество символов имени не должно привышать 30", authPanel2);
+                    return;
+                }
+
+                // проверяет существование подстроки состоящей из пробела " "
+                if(name.indexOf(" ") != -1) {
+                    showHind("Вместо пробела используйте '_'", authPanel2);
+                    return;
+                }
+
+                if(tfPassword1.getText().length() < 6) {
+                    showHind("Пароль должен составлять не меньше 6 символов", authPanel2);
+                    return;
+                }
+
+
+                if (tfPassword1.getText().indexOf(" ") != -1 || tfPassword2.getText().indexOf(" ") != -1) {
+                    showHind("Пробел является запрещённым символом", authPanel2);
+                    return;
+                }
+
+                if (!tfPassword1.getText().equals(tfPassword2.getText())) {
+                    showHind("Пароли не совпадают", authPanel2);
+                    return;
+                }
+
+                // тут должно быть отправление на клиент
+                connection.sendString("/SIGN_UP");
+
+                nameOfUser = tfLogin2.getText();
+                connection.sendString(nameOfUser);
+
+                connection.sendString(tfPassword1.getText());
+
+                tfLogin2.setText("");
+                tfPassword1.setText("");
+                tfPassword2.setText("");
+
+
+                // нужно получить результат регистрации пользователя и сообщить об этом пользователю
+                // *здесть получаемм результат*
+                // *каким либо обралом сообщеаем об этом пользователю напимер:*
+
+
+
+//                // нужно доработать
+//                if(false) {
+//                    // start client
+//                } else {
+//                    showHind("ошибка регистрации", authPanel2);
+//                    paintOverTheButton(btnRegistration);
+//                }
+
+
+            }
+        });
+
+        btnBack = new JButton("назад");
+        panel.add(btnBack);
+        btnBack.setBounds(450,400,100,30);
+        btnBack.setToolTipText("вернуться к авторизации");
+        btnBack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                auth.getContentPane().removeAll();
+                auth.getContentPane().add(authPanel1);
+                auth.setTitle("Авторизация");
+
+                tfLogin2.setText("");
+                tfPassword1.setText("");
+                tfPassword2.setText("");
+
+                auth.validate();
+                auth.repaint();
+            }
+        });
+
+
+        panel.setVisible(true);
+    }
+
+    // подкрашивание текстового поля
+    private void fieldTinting(Color background, JTextField textField) {
+
+
+        if (textField.getText().equals("")) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Color naturalTFColor = background;
+
+                    textField.setBackground(Color.RED);
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
+                    textField.setBackground(naturalTFColor);
+                }
+            }).start();
+        }
+    }
+
+    private void paintOverTheButton(JButton btn) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Color natural = btn.getBackground();
+
+                for (int i = 0; i < 3; ++i) {
+                    btn.setBackground(new Color(255, 0, 0));
+                    btn.setForeground(Color.WHITE);
+
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
+
+                    btn.setBackground(natural);
+                    btn.setForeground(Color.BLACK);
+
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+
+
+            }
+        }).start();
+    }
+
+    public void showHind(String promptWord, JPanel panel) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                JLabel lblPrompt = new JLabel(promptWord);
+                panel.add(lblPrompt);
+
+                lblPrompt.setBounds(500 - (int) ( promptWord.length()*7.7)/2 , 10, (int) ( promptWord.length()*7.6),30);
+
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+
+                panel.remove(lblPrompt);
+
+                auth.validate();
+                auth.repaint();
+            }
+        }).start();
+        return;
+    }
+
+    private boolean spaceCharacterSearch(char[] arr) {
+        for(int i = 0; i < arr.length; ++i) {
+            if(arr[i] == ' ') {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
+    // создние клиента
     @Override
-    public void runClient(String name) {
-//        new Client()
-        initClient(name);
+    public void onConnection(String name) {
+        connection.sendString("/ON_CONNECTION");
+        connection.sendString(name);
+    }
+
+    @Override
+    public synchronized void  logInError() {
+        showHind("ошибка авторизации: Неверный логин или пароль", authPanel1);
+        paintOverTheButton(btnLogIn);
+    }
+
+    @Override
+    public synchronized void signUpError() {
+        showHind("ошибка регистрации: Данное имя уже занято", authPanel2);
+        paintOverTheButton(btnSignUp);
+    }
+
+    @Override
+    public void runClient() {
+        dataBase.logIn(nameOfUser);
+        initClient(nameOfUser);
+
+        // пробуем по другому
+//        auth.dispose();
+        auth.setVisible(false);
         System.out.println("run client");
+
     }
 
     private void initClient(String name) {
-        setTitle(name);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setSize(WIDTH, HEIGHT);
-        setLocationRelativeTo(null);
+        client.setTitle(name);
+        client.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        client.setSize(WIDTH, HEIGHT);
+        client.setLocationRelativeTo(null);
+//        client.setBackground(new Color(60, 63, 65));
 //        setAlwaysOnTop(true);
 
+        onConnection(name);
+
+
         lblNickname = new JLabel(name);
-        lblinterlocutor = new JLabel("Собеседник");
+        lblInterlocutor = new JLabel("      Собеседник");
 
 
         // верхняя панель
-        add(upPanel, BorderLayout.NORTH);
+        client.add(upPanel, BorderLayout.NORTH);
         upPanel.setBackground(Color.blue);
+        upPanel.setLayout(new BorderLayout());
 
-        fieldSearch.setPreferredSize(new Dimension(300,20));
+        fieldSearch.setPreferredSize(new Dimension(310,20));
         upPanel.add(fieldSearch, BorderLayout.WEST);
         fieldSearch.addActionListener(new ActionListener() {
             @Override
@@ -105,30 +553,86 @@ public class Client extends JFrame implements ClientConnectionListener {
             }
         });
 
-        upPanel.add(lblinterlocutor, BorderLayout.CENTER);
-        lblinterlocutor.setForeground(Color.WHITE);
+        Color color = fieldSearch.getCaretColor();
+
+        fieldSearch.setForeground(Color.LIGHT_GRAY);
+        fieldSearch.setText(searchHint);
+        fieldSearch.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                fieldSearch.setForeground(color);
+                if (fieldSearch.getText().equals(searchHint)) {
+                    fieldSearch.setText("");
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (fieldSearch.getText().isEmpty()) {
+                    fieldSearch.setForeground(Color.LIGHT_GRAY);
+                    fieldSearch.setText(searchHint);
+                }
+            }
+        });
+
+
+
+        upPanel.add(lblInterlocutor, BorderLayout.CENTER);
+        lblInterlocutor.setForeground(Color.WHITE);
+
+        upPanel.add(btnLogOut, BorderLayout.EAST);
+        btnLogOut.setBackground(Color.BLUE);
+        btnLogOut.setForeground(Color.WHITE);
+        btnLogOut.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                log.setText("");
+                clearFriendsList();
+                client.dispose();
+                lblInterlocutor.setText("");
+                dataBase.logOut();
+
+                connection.sendString("/LOG_OUT");
+
+                auth.setVisible(true);
+            }
+        });
 
 
         // централььная панель
-        add(scrLog, BorderLayout.CENTER);
+        client.add(scrLog, BorderLayout.CENTER);
         log.setEditable(false);
         log.setLineWrap(true);
         log.setFocusable(false);
+//        log.setBackground(new Color(195, 255, 237));
+//        log.setBackground(new Color(238, 239, 255));
 
-        add(fieldInput, BorderLayout.SOUTH);
+        fieldInput.requestFocusInWindow();
+
+
+        client.add(fieldInput, BorderLayout.SOUTH);
+        fieldInput.setBackground(new Color(238, 239, 255));
         fieldInput.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (lblInterlocutor.getText() == "      Собеседник") {
+                    fieldInput.setText("");
+                    return;
+                }
                 sendMessage();
             }
         });
 
 
         // левая панель
-        add(leftPanel, BorderLayout.WEST);
+        client.add(leftPanel, BorderLayout.WEST);
         leftPanel.setBackground(Color.CYAN);
+        leftPanel.setLayout(new BorderLayout());
 
-        myScrollPaneList.setPreferredSize(new Dimension(300,740));
+
+
+        myScrollPaneList.setPreferredSize(new Dimension(310,740));
+        listFriends.setBackground(new Color(195, 255, 237));
         listFriends.setLayoutOrientation(JList.VERTICAL);
         leftPanel.add(myScrollPaneList, BorderLayout.CENTER);
         listFriends.addMouseListener(new MouseAdapter() {
@@ -138,9 +642,14 @@ public class Client extends JFrame implements ClientConnectionListener {
                     int selected = listFriends.locationToIndex(e.getPoint());
                     System.out.println(selected);
 
-                    if(dfm.getElementAt(selected).toString().equals(lblinterlocutor)) return;
-                    fieldSearch.setText("");
+                    // проверить этот момент
+                    System.out.println(dfm.getElementAt(selected).toString());
+
+                    if(dfm.getElementAt(selected).toString().equals(lblInterlocutor.getText().trim())) return;
+                    fieldSearch.setForeground(Color.LIGHT_GRAY);
+                    fieldSearch.setText(searchHint);
                     log.setText("");
+                    fieldInput.setText("");
 
                     String temp = dfm.getElementAt(selected).toString();
                     if (temp.indexOf("   ") != -1) {
@@ -148,18 +657,18 @@ public class Client extends JFrame implements ClientConnectionListener {
                         dfm.set(selected, temp);
 
                         connection.sendString("/SET_FLAG_TRUE_BY_TIME");
-                        connection.sendString(getTitle());
+                        connection.sendString(client.getTitle());
                         connection.sendString(temp);
 
-                        String outTime = dataBase.getTimeOfLastWroughtReadMsg(getTitle(),temp);
+                        String outTime = dataBase.getTimeOfLastWroughtReadMsg(client.getTitle(),temp);
                         System.out.println(outTime);
                         connection.sendString(outTime);
                     }
 
-                    lblinterlocutor.setText(temp);
-                    dataBase.setFlagTrueForMessages(getTitle(), lblinterlocutor.getText());
+                    lblInterlocutor.setText("      " + temp);
+                    dataBase.setFlagTrueForMessages(client.getTitle(), lblInterlocutor.getText().trim());
 
-                    printDialog(lblinterlocutor.getText());
+                    printDialog(lblInterlocutor.getText().trim());
 
 //                    clearFriendsList();
 //                    printFriendList();
@@ -168,10 +677,11 @@ public class Client extends JFrame implements ClientConnectionListener {
                     int selected = listFriends.locationToIndex(e.getPoint());
                     System.out.println(selected);
 
-                    fieldSearch.setText("");
+                    fieldSearch.setForeground(Color.LIGHT_GRAY);
+                    fieldSearch.setText(searchHint);
                     log.setText("");
 
-                    lblinterlocutor.setText(dfm.getElementAt(selected).toString());
+                    lblInterlocutor.setText("      " + dfm.getElementAt(selected).toString());
                     statusFriendSearch = false;
 
                     clearFriendsList();
@@ -180,8 +690,7 @@ public class Client extends JFrame implements ClientConnectionListener {
             }
         });
 
-        setVisible(true);
-
+        client.setVisible(true);
 
         printFriendList();
         // запись подключения
@@ -190,11 +699,12 @@ public class Client extends JFrame implements ClientConnectionListener {
         getListOfMessages();
     }
 
+
     private synchronized void printMsg(String sender, String recipient, String msg) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                if( (sender.equals(lblinterlocutor.getText()) && recipient.equals(lblNickname.getText())) || (recipient.equals(lblinterlocutor.getText()) && sender.equals(lblNickname.getText())) ) {
+                if( (sender.equals(lblInterlocutor.getText().trim()) && recipient.equals(lblNickname.getText())) || (recipient.equals(lblInterlocutor.getText().trim()) && sender.equals(lblNickname.getText())) ) {
                     log.append(sender + ": " + msg + "\n");
                     log.setCaretPosition(log.getDocument().getLength());
                 }else {
@@ -221,7 +731,7 @@ public class Client extends JFrame implements ClientConnectionListener {
 
 
         // записывает сообщение в локальную БД с учетом статуса прочитанно не прочитанно
-        if(sender.equals(lblinterlocutor.getText())) {
+        if(sender.equals(lblInterlocutor.getText().trim())) {
             dataBase.insertMessages(Integer.parseInt(id), sender, recipient, msg, time, true);
 
             // запрос на изменение статуса сообщения на сервере
@@ -271,11 +781,11 @@ public class Client extends JFrame implements ClientConnectionListener {
     @Override
     public void sendMessage() {
         String msg = fieldInput.getText();
-        if(msg.equals("") || lblinterlocutor.getText().equals("")) return;
+        if(msg.equals("") || lblInterlocutor.getText().trim().equals("")) return;
 
         connection.sendString("/NEW_MESSAGE");
         connection.sendString(lblNickname.getText());
-        connection.sendString(lblinterlocutor.getText());
+        connection.sendString(lblInterlocutor.getText().trim());
         connection.sendString(msg);
 
         fieldInput.setText(null);
@@ -290,7 +800,7 @@ public class Client extends JFrame implements ClientConnectionListener {
                 ArrayList arrayList = dataBase.getFriendsList();
                 for(int i = 0; i < arrayList.size(); ++i) {
                     String el = arrayList.get(i).toString();
-                    int count = dataBase.countOfUnreadMessages(getTitle(), arrayList.get(i).toString());
+                    int count = dataBase.countOfUnreadMessages(client.getTitle(), arrayList.get(i).toString());
 //                    while (el.length() < 55) {
 //                        el = el + " ";
 //                    }
@@ -345,7 +855,7 @@ public class Client extends JFrame implements ClientConnectionListener {
     private void printDialog(String name) {
 
         // нужно изменить функцию
-        ArrayList arrayList = dataBase.getDialog(getTitle(), name);
+        ArrayList arrayList = dataBase.getDialog(client.getTitle(), name);
 
         for(int i = 0; i < arrayList.size(); ++i) {
             String[] arr = (String[]) arrayList.get(i);
@@ -354,45 +864,6 @@ public class Client extends JFrame implements ClientConnectionListener {
 
     }
 
-//    private void friendListSorting(String sender) {
-//
-//        for(int i = 0; i < dfm.size(); ++i) {
-//
-//            if(dfm.getElementAt(i).toString().equals(sender)) {
-//                String[] arr = new String[dfm.size() -1];
-//
-//                for(int j = 0; j < i; ++j) {
-//                        arr[j] = dfm.getElementAt(j).toString();
-//                }
-//
-//                for(int j = i; j < arr.length; ++j) {
-//                    arr[j] = dfm.getElementAt(j+1).toString();
-//                }
-//
-//                clearFriendsList();
-//
-//                dfm.addElement(sender + "   *");
-//                for(int j = 0; j < arr.length; ++j) {
-//                    dfm.addElement(arr[j]);
-//                }
-//
-//                return;
-//            } else {
-//                String[] arr = new String[dfm.size()];
-//
-//                for(int j = 0; j < arr.length; ++j) {
-//                    arr[j] = dfm.getElementAt(j).toString();
-//                }
-//
-//                clearFriendsList();
-//                dfm.addElement(sender);
-//                for(int j = 0; j < arr.length; ++j) {
-//                    dfm.addElement(arr[j]);
-//                }
-//
-//            }
-//        }
-//
-//    }
+
 
 }

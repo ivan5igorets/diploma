@@ -40,9 +40,16 @@ public class TCPConnection {
         rxThread.start();
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public void operation(String opr) throws IOException {
         switch (opr) {
-            case "/ON_CONNECTION": eventListener.onConnectionReady(in.readLine(), TCPConnection.this);
+
+            // написать правильный вызов onConnectionReady
+            case "/ON_CONNECTION": name = in.readLine();
+                eventListener.onConnectionReady(name, TCPConnection.this);
                 break;
             case "/NEW_MESSAGE": eventListener.addNewMessage(in.readLine(), in.readLine(), in.readLine());
                 break;
@@ -57,6 +64,8 @@ public class TCPConnection {
             case "/SIGN_UP": signUp(in.readLine(), in.readLine());
                 break;
             case "/LOG_IN": logIn(in.readLine(), in.readLine());
+                break;
+            case "/LOG_OUT": eventListener.onDisconnect(TCPConnection.this, name);
                 break;
         }
     }
