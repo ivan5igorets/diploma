@@ -1,13 +1,10 @@
 import java.sql.*;
 import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 
 public class ClientDB {
 
-    final String DB_CLIENT = "C:/Users/ivan5/IdeaProjects/Messanger+DB/messanger.client/db/client.db";
+    final String DB_CLIENT = "C:/Users/ivan5/messangerDB/client.db";
 
     // sqlite Connection
     Connection connection = null;
@@ -451,9 +448,6 @@ public class ClientDB {
     }
 
 
-
-
-
     // вызывать когда открывается переписка
     public String getTimeOfLastWroughtReadMsg(String accountName, String interlocutor) {
 
@@ -542,11 +536,11 @@ public class ClientDB {
 
     public static void main(String[] args) {
 
-        ClientDB dataBase = ClientDB.getInstance();
-
-        System.out.println(dataBase.checkAuth());
-
-        dataBase.logOut();
+//        ClientDB dataBase = ClientDB.getInstance();
+//
+//        System.out.println(dataBase.checkAuth());
+//
+//        dataBase.logOut();
 
 //        System.out.println(dataBase.checkAuth());
 //

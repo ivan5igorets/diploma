@@ -10,7 +10,7 @@ public class TCPConnection {
     private final BufferedReader in;
     private final BufferedWriter out;
 
-    // нужно хранить имя, это ключ к значению в хэш-таблице
+    // нужно хранить имя, это ключ к значению в подклчения
     // для быстрого удаления
     private String name = null;
 
@@ -38,10 +38,6 @@ public class TCPConnection {
             }
         });
         rxThread.start();
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public void operation(String opr) throws IOException {

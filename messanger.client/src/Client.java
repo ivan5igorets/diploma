@@ -6,8 +6,10 @@ import java.util.ArrayList;
 
 public class Client implements ClientConnectionListener {
 
+
     private static final String IP_ADDR = "127.0.0.1";
-    private static final int PORT = 8189;
+//    private static final String IP_ADDR = "52.19.225.66";
+    private static final int PORT = 443;
 
     private static final int WIDTH = 1000;
     private static final int HEIGHT = 600;
@@ -29,15 +31,11 @@ public class Client implements ClientConnectionListener {
     private JTextField tfLogin1;
     private JPasswordField passwordField;
 
-
     private JPanel authPanel2;
     private JTextField tfLogin2;
     private JTextField tfPassword1;
     private JTextField tfPassword2;
     private JButton btnSignUp;
-
-
-
 
     // инициалиация компонентов для Клиента
     private String nameOfUser;
@@ -60,7 +58,6 @@ public class Client implements ClientConnectionListener {
     private final JList listFriends = new JList(dfm);
     private final JScrollPane myScrollPaneList = new JScrollPane(listFriends);
 
-
     private boolean statusFriendSearch = false;
 
     private final ClientDB dataBase = ClientDB.getInstance();
@@ -68,8 +65,6 @@ public class Client implements ClientConnectionListener {
     private Connection connection;
 
 
-
-    // нужно переписать с учётом изменений "onConnectionReady"
     private Client() {
 
         try {
@@ -91,14 +86,9 @@ public class Client implements ClientConnectionListener {
             auth.setVisible(true);
         }
 
-
     }
 
-
-
     private void initAuth() {
-
-
 
         auth.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         auth.setVisible(true);
@@ -106,7 +96,6 @@ public class Client implements ClientConnectionListener {
         auth.setLocationRelativeTo(null);
         auth.setResizable(false);
         auth.setVisible(false);
-
 
         authPanel1 = new JPanel();
         auth.setTitle("Авторизация");
@@ -127,9 +116,6 @@ public class Client implements ClientConnectionListener {
         final JLabel lblEnterPass1 = new JLabel("Введите пароль");
         final JLabel lblPrompt = new JLabel("нет аккаунта?");
 
-//        JTextField tfLogin;
-//        JPasswordField passwordField;
-
         JButton btnBack;
 
         panel.setLayout(null);
@@ -149,8 +135,6 @@ public class Client implements ClientConnectionListener {
         passwordField = new JPasswordField();
         panel.add(passwordField);
         passwordField.setBounds(400,250,200,30);
-
-
 
         btnLogIn = new JButton("войти");
         panel.add(btnLogIn);
@@ -212,17 +196,8 @@ public class Client implements ClientConnectionListener {
                 tfLogin1.setText("");
                 passwordField.setText("");
 
-                // получить ответ с сервера
-//                if (false) {
-//                    // запускаем клиент
-//                } else {
-//                    showHind("ошибка авторизации", authPanel1);
-//                    paintOverTheButton(btnRegistration);
-//                }
-
             }
         });
-
 
 
         panel.add(lblPrompt);
@@ -234,14 +209,12 @@ public class Client implements ClientConnectionListener {
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 auth.getContentPane().removeAll();
                 auth.getContentPane().add(authPanel2);
                 auth.setTitle("Регистрация");
 
                 auth.validate();
                 auth.repaint();
-
             }
         });
 
@@ -254,8 +227,6 @@ public class Client implements ClientConnectionListener {
         final JLabel lblEnterLogin = new JLabel("Введите логин");
         final JLabel lblEnterPass1 = new JLabel("Введите пароль");
         final JLabel lblEnterPass2 = new JLabel("Введите пароль повторно");
-
-
 
         JButton btnBack;
 
@@ -353,23 +324,6 @@ public class Client implements ClientConnectionListener {
                 tfLogin2.setText("");
                 tfPassword1.setText("");
                 tfPassword2.setText("");
-
-
-                // нужно получить результат регистрации пользователя и сообщить об этом пользователю
-                // *здесть получаемм результат*
-                // *каким либо обралом сообщеаем об этом пользователю напимер:*
-
-
-
-//                // нужно доработать
-//                if(false) {
-//                    // start client
-//                } else {
-//                    showHind("ошибка регистрации", authPanel2);
-//                    paintOverTheButton(btnRegistration);
-//                }
-
-
             }
         });
 
@@ -394,13 +348,11 @@ public class Client implements ClientConnectionListener {
             }
         });
 
-
         panel.setVisible(true);
     }
 
     // подкрашивание текстового поля
     private void fieldTinting(Color background, JTextField textField) {
-
 
         if (textField.getText().equals("")) {
             new Thread(new Runnable() {
@@ -445,8 +397,6 @@ public class Client implements ClientConnectionListener {
                         ex.printStackTrace();
                     }
                 }
-
-
             }
         }).start();
     }
@@ -484,8 +434,6 @@ public class Client implements ClientConnectionListener {
         return false;
     }
 
-
-
     // создние клиента
     @Override
     public void onConnection(String name) {
@@ -522,15 +470,11 @@ public class Client implements ClientConnectionListener {
         client.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         client.setSize(WIDTH, HEIGHT);
         client.setLocationRelativeTo(null);
-//        client.setBackground(new Color(60, 63, 65));
-//        setAlwaysOnTop(true);
 
         onConnection(name);
 
-
         lblNickname = new JLabel(name);
         lblInterlocutor = new JLabel("      Собеседник");
-
 
         // верхняя панель
         client.add(upPanel, BorderLayout.NORTH);
@@ -549,7 +493,6 @@ public class Client implements ClientConnectionListener {
                 friendSearch(fieldSearch.getText());
 
                 statusFriendSearch = true;
-//                getFriends();
             }
         });
 
@@ -575,8 +518,6 @@ public class Client implements ClientConnectionListener {
             }
         });
 
-
-
         upPanel.add(lblInterlocutor, BorderLayout.CENTER);
         lblInterlocutor.setForeground(Color.WHITE);
 
@@ -598,17 +539,13 @@ public class Client implements ClientConnectionListener {
             }
         });
 
-
         // централььная панель
         client.add(scrLog, BorderLayout.CENTER);
         log.setEditable(false);
         log.setLineWrap(true);
         log.setFocusable(false);
-//        log.setBackground(new Color(195, 255, 237));
-//        log.setBackground(new Color(238, 239, 255));
 
         fieldInput.requestFocusInWindow();
-
 
         client.add(fieldInput, BorderLayout.SOUTH);
         fieldInput.setBackground(new Color(238, 239, 255));
@@ -699,7 +636,6 @@ public class Client implements ClientConnectionListener {
         getListOfMessages();
     }
 
-
     private synchronized void printMsg(String sender, String recipient, String msg) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -707,8 +643,6 @@ public class Client implements ClientConnectionListener {
                 if( (sender.equals(lblInterlocutor.getText().trim()) && recipient.equals(lblNickname.getText())) || (recipient.equals(lblInterlocutor.getText().trim()) && sender.equals(lblNickname.getText())) ) {
                     log.append(sender + ": " + msg + "\n");
                     log.setCaretPosition(log.getDocument().getLength());
-                }else {
-//                    friendListSorting(sender);
                 }
             }
         });
@@ -717,7 +651,6 @@ public class Client implements ClientConnectionListener {
     @Override
     public void receivingMessage(String id, String sender, String recipient, String msg, String time, String flag) {
         System.out.println(flag);
-
 
         boolean boolFlag;
         if(flag.equals("t") ) {
@@ -728,7 +661,6 @@ public class Client implements ClientConnectionListener {
 
         // печатает сообщение если открыта переписка с отправителем
         printMsg(sender, recipient, msg);
-
 
         // записывает сообщение в локальную БД с учетом статуса прочитанно не прочитанно
         if(sender.equals(lblInterlocutor.getText().trim())) {
@@ -781,6 +713,7 @@ public class Client implements ClientConnectionListener {
     @Override
     public void sendMessage() {
         String msg = fieldInput.getText();
+        msg = msg.trim();
         if(msg.equals("") || lblInterlocutor.getText().trim().equals("")) return;
 
         connection.sendString("/NEW_MESSAGE");
@@ -801,19 +734,12 @@ public class Client implements ClientConnectionListener {
                 for(int i = 0; i < arrayList.size(); ++i) {
                     String el = arrayList.get(i).toString();
                     int count = dataBase.countOfUnreadMessages(client.getTitle(), arrayList.get(i).toString());
-//                    while (el.length() < 55) {
-//                        el = el + " ";
-//                    }
 
                     if(!(count == 0)) {
                         el = el + "   (" + count + ")";
                     }
                     dfm.addElement(el);
-//                    dfm.addElement(dataBase.countOfUnreadMessages(getTitle(), arrayList.get(i).toString()) + " " + arrayList.get(i).toString());
-
                 }
-
-
             }
         });
     }
@@ -847,13 +773,7 @@ public class Client implements ClientConnectionListener {
         statusFriendSearch = false;
     }
 
-    private void getFriends() {
-        connection.sendString("/GET_FRIENDS");
-        connection.sendString(fieldSearch.getText());
-    }
-
     private void printDialog(String name) {
-
         // нужно изменить функцию
         ArrayList arrayList = dataBase.getDialog(client.getTitle(), name);
 
@@ -861,9 +781,6 @@ public class Client implements ClientConnectionListener {
             String[] arr = (String[]) arrayList.get(i);
             printMsg(arr[0], arr[1], arr[2]);
         }
-
     }
-
-
 
 }

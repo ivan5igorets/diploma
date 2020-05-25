@@ -15,7 +15,7 @@ public class Server implements TCPConnectionListener{
 
     private Server() {
         System.out.println("Server running...");
-        try (ServerSocket serverSocket = new ServerSocket(8189)) {
+        try (ServerSocket serverSocket = new ServerSocket(443)) {
             while (true) {
                 try {
                     new TCPConnection(this, serverSocket.accept());
@@ -115,7 +115,6 @@ public class Server implements TCPConnectionListener{
         dataBase.setFlagTrueByTime(user1, user2, time);
     }
 
-
     // протестировать
     @Override
     public boolean signUp(String login, String password) {
@@ -144,33 +143,6 @@ public class Server implements TCPConnectionListener{
         return false;
     }
 
-//    @Override
-//    public void getFriends(String recipient) {
-//        System.out.println("getFriends Server");
-//
-//        sendToUser(recipient, "/GET_FRIENDS");
-//
-//        // нужно переписать
-//        sendToUser(recipient,"Ivan");   //
-//        sendToUser(recipient, "Kaban"); //
-//        // sDfzg xhcghvkjvk
-//
-//        sendToUser(recipient, "/END");
-//    }
-//
-//
-//    @Override                                         // desired = искомое
-//    public void searchFriends(String recipient, String desired) {
-//        System.out.println("search Friends Server");
-//
-//        sendToUser(recipient, "/SEARCH_FRIENDS");
-//
-//        // нужно переписать
-//        sendToUser(recipient,"типо новые друзья");   //
-//        // sDfzg xhcghvkjvk
-//
-//        sendToUser(recipient, "/END");
-//    }
 
     private void sendToUser(String recipient, String msg) {
         TCPConnection tcpConnection = connection.get(recipient);
@@ -181,11 +153,4 @@ public class Server implements TCPConnectionListener{
 
     }
 
-//    private void sendToAllConnections(String value) {
-//        System.out.println(value);
-//        final int cnt = connections.size();
-//        for(int i = 0; i < cnt; ++i) {
-//            connections.get(i).sendString(value);
-//        }
-//    }
 }

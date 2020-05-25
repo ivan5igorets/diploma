@@ -55,18 +55,6 @@ public class Connection {
         }
     }
 
-//    public synchronized void getFriends() throws IOException {
-//        System.out.println("getFriends client");
-//
-//        eventListener.clearFriendsList();
-//
-//        String flag = in.readLine();
-//        while(!flag.equals("/END")) {
-//            eventListener.printFriends(flag);
-//            flag = in.readLine();
-//        }
-//    }
-
     public synchronized void sendString(String value) {
         try {
             out.write(value + "\r\n");

@@ -1,21 +1,23 @@
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class DataBase {
 
-    private final String user = "postgres";
-    private final String password = "12345";
-    private final String url = "jdbc:postgresql://localhost:5432/testmessanger";
+    private final String user = "tiahlxxslhttfg";
+    private final String password = "9ecd8d171fcf24a52f655b611473d05c9b37635f9846c56a64e11879786aaea2";
+    private final String url = "jdbc:postgresql://ec2-46-137-84-140.eu-west-1.compute.amazonaws.com:5432/de3muvki3lrj42?sslmode=require";
+
     private Connection connection;
     public static DataBase instance;
 
     private DataBase() {
         try {
-            connection = DriverManager.getConnection(url, user, password);
-        } catch (SQLException e) {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+        connect();
+        createTablesIfNotExist();
     }
 
     public static DataBase getInstance() {
@@ -39,6 +41,44 @@ public class DataBase {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private void createTablesIfNotExist() {
+
+        try (PreparedStatement statement = connection.prepareStatement(
+                "CREATE TABLE IF NOT EXISTS users( " +
+                        "u_id SERIAL PRIMARY KEY, " +
+                        "name TEXT NOT NULL, " +
+                        "last_seen timestamp, " +
+                        "password TEXT NOT NULL)")) {
+
+            // выполнение запроса
+            statement.executeUpdate();
+            System.out.println("table users was created");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("table users does not created");
+        }
+
+        try (PreparedStatement statement = connection.prepareStatement(
+                "CREATE TABLE IF NOT EXISTS messages( " +
+                        "id BIGSERIAL PRIMARY KEY, " +
+                        "sender integer REFERENCES users(u_id), " +
+                        "recipient integer REFERENCES users(u_id), " +
+                        "message text NOT NULL, " +
+                        "time timestamp, " +
+                        "flag boolean)")) {
+
+            // выполнение запроса
+            statement.executeUpdate();
+            System.out.println("table messages was created");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("table messages does not created");
+        }
+
     }
 
     private int getId(String user) {
@@ -91,71 +131,6 @@ public class DataBase {
         return arr;
     }
 
-    // возвращвет все сообщения переписки указанных пользователей
-    private void getDialog(String interlocutor1, String interlocutor2) {
-
-        try (PreparedStatement statement = connection.prepareStatement(
-                "SELECT users.name, messages.message, messages.time " +
-                        "FROM users, messages " +
-                        "WHERE users.u_id = messages.sender AND (messages.sender = (?) AND messages.recipient = (?) OR messages.sender = (?) AND messages.recipient = (?)) " +
-                        "ORDER BY time ASC")) {
-
-            statement.setInt(1, getId(interlocutor1));
-            statement.setInt(2, getId(interlocutor2));
-            statement.setInt(3, getId(interlocutor2));
-            statement.setInt(4, getId(interlocutor1));
-            final ResultSet resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                System.out.print(resultSet.getString(1) + "   ");
-                System.out.print(resultSet.getString(2) + "   ");
-                System.out.println(resultSet.getTimestamp(3) + "   ");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // возвращает список собеседников
-//    private void getFriends(String user) {
-//        connect();
-//
-//        try (PreparedStatement statement = connection.prepareStatement(
-//                "SELECT users.name " +
-//                        "FROM users, (SELECT (messages.sender) as friends FROM messages WHERE messages.recipient = (?) " +
-//                        "UNION " +
-//                        "SELECT (messages.recipient) as friends FROM messages WHERE messages.sender = (?))AS friends " +
-//                        "WHERE users.u_id = friends ")) {
-//
-//            statement.setInt(1, getId(user));
-//            statement.setInt(2, getId(user));
-//
-//            final ResultSet resultSet = statement.executeQuery();
-//
-//            while (resultSet.next()) {
-//                System.out.println(resultSet.getString(1) + "   ");
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        closeConnection();
-//
-//    }
-
-    // возвращает список всех пользователей
-    private void getAllUsers() {
-
-        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM users")) {
-            final ResultSet resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                System.out.println(resultSet.getString(2) + "   ");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     // поле flag не нужно отправлять на клиент, оно устанавливается автоматически
     public ArrayList getListMessages(String user, String time) {
         String[] column = new String[5];
@@ -199,40 +174,6 @@ public class DataBase {
             e.printStackTrace();
             return null;
         }
-    }
-
-    private Timestamp getLastSeenTime(String name) {
-
-        try (PreparedStatement statement = connection.prepareStatement("SELECT last_seen FROM users " +
-                "WHERE u_id = (?)")) {
-
-            statement.setInt(1, getId(name));
-
-            final ResultSet resultSet = statement.executeQuery();
-
-            resultSet.next();
-            System.out.print(resultSet.getString(1) + " | ");
-            return Timestamp.valueOf(resultSet.getString(1));
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    private int getRsCount(ResultSet rs) {
-        int rsCount = 0;
-
-        try {
-            while (rs.next()) {
-                ++rsCount;
-            }
-
-            rs.beforeFirst();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return rsCount;
     }
 
 
@@ -386,81 +327,10 @@ public class DataBase {
 
         return arr;
     }
-//    public void getFriends(String name) {
-//
-//        // функция делающаяя запрос в БД, результатом которого является список пользователей, чьи имемена содержат
-//        // полученную подстроку
-//            ArrayList arrayList = friendSearch(name);
-//
-//            for (int i = 0; i < arrayList.size(); ++i) {
-//                System.out.println(arrayList.get(i) +  " | ");
-//                // здесь должна быть отправка на клиент
-//            }
-//
-//    }
 
 
     public static void main(String[] args) {
 
         DataBase app = DataBase.getInstance();
-
-
-
-//        String[] arr = app.logIn("Пятигорец Иван");
-//        System.out.println(arr[0]);
-//        System.out.println(arr[1]);
-
-//        System.out.println(app.isExist("Пятигорец Иван"));
-
-//        System.out.println(app.newUserRegistration("kaban", "123456qwerty"));
-
-//        app.setFlagTrueByTime("Пятигорец Иван", "Пятигорец Алексей", "2020-04-11 19:19:36.36498");
-
-//        ArrayList<String> arrayList = new ArrayList();
-//
-//        arrayList.add("01");
-//        arrayList.add("0wefd");
-//        arrayList.add("sfd");
-//        String temp;
-
-//        for(int u = 0; u < arrayList.size(); ++u) {
-//            temp = arrayList.get(u);
-//
-//            System.out.println(temp);
-//        }
-
-//        app.friendSearch("ан");
-//        app.getAllUsers();
-
-//        app.friendSearch("Ал");
-
-
-//        DataBase bf = DataBase.getInstance();
-
-//
-//        ArrayList<String[]> arrayList = app.getListMessages("Пятигорец Иван", "2020-01-01 17:49:03.186956");
-//        String[] arr = null;
-//
-//        System.out.println("-----------------------------------------");
-//
-//        for (int i = 0; i < arrayList.size(); ++i) {
-//
-//            arr = arrayList.get(i);
-//            System.out.print(arr[0] + " | ");
-//            System.out.print(arr[1] + " | ");
-//            System.out.print(arr[2] + " | ");
-//            System.out.print(arr[3] + " | ");
-//            System.out.print(arr[4] + " | ");
-//            System.out.println();
-//
-//        }
-
-
-            // При отправке сообщения поле last_seen в таблице users следует обновить текущими [датой и временем]
-//        String[] arr = app.insertMessage( "Пятигорец Иван", "Пятигорец Алексей", "шото тут не как всё просто как изначально казалось.");
-//        System.out.println(arr[0]);
-//        System.out.println(arr[1]);
-
-
     }
 }
