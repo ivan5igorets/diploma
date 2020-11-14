@@ -9,3 +9,9 @@ store information on the server. The application is a desktop, a graphical inter
 created by using the Swing library. The server part is assembled with the help of
 the Maven project automation framework. In the client part, JDBC is used to create
 a connection with the SQLite database.
+  
+  
+Example of a working application  
+
+  
+![](https://github.com/ivan5igerets/diploma/raw/master/img/screenShot.png)
