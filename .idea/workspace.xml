@@ -1,36 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5d659247-77c9-4dec-9383-1f64fe5bb6c4" name="Default Changelist" comment="demo-version #1">
-      <change afterPath="$PROJECT_DIR$/messanger.server/server.iml" afterDir="false" />
+    <list default="true" id="5d659247-77c9-4dec-9383-1f64fe5bb6c4" name="Default Changelist" comment="25.05.2020">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/messanger.client/db/client.db" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/messanger.client/src/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/messanger.client/src/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/messanger.client/src/ClientDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/messanger.client/src/ClientDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/messanger.client/src/Connection.java" beforeDir="false" afterPath="$PROJECT_DIR$/messanger.client/src/Connection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/messanger.server/src/main/java/DataBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/messanger.server/src/main/java/DataBase.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/messanger.server/src/main/java/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/messanger.server/src/main/java/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/messanger.server/src/main/java/TCPConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/messanger.server/src/main/java/TCPConnection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/messanger.server/target/classes/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/messanger.server/target/classes/Server.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/messanger.client/Client$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/messanger.client/Client$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/messanger.client/Client$10.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/messanger.client/Client$10.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/messanger.client/Client$11.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/messanger.client/Client$11.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/messanger.client/Client$12.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/messanger.client/Client$12.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/messanger.client/Client$13.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/messanger.client/Client$13.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/messanger.client/Client$14.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/messanger.client/Client$14.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/messanger.client/Client$15.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/messanger.client/Client$15.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/messanger.client/Client$16.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/messanger.client/Client$16.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/messanger.client/Client$17.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/messanger.client/Client$17.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/messanger.client/Client$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/messanger.client/Client$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/messanger.client/Client$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/messanger.client/Client$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/messanger.client/Client$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/messanger.client/Client$4.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/messanger.client/Client$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/messanger.client/Client$5.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/messanger.client/Client$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/messanger.client/Client$6.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/messanger.client/Client$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/messanger.client/Client$7.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/messanger.client/Client$8.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/messanger.client/Client$8.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/messanger.client/Client$9.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/messanger.client/Client$9.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/messanger.client/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/messanger.client/Client.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/messanger.client/Connection.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/messanger.client/Connection.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/messanger.server/target/classes/DataBase.class" beforeDir="false" afterPath="$PROJECT_DIR$/messanger.server/target/classes/DataBase.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/messanger.server/target/classes/TCPConnection.class" beforeDir="false" afterPath="$PROJECT_DIR$/messanger.server/target/classes/TCPConnection.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/messanger.client/ClientDB.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/messanger.client/ClientDB.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/messanger.client/META-INF/messanger.client.kotlin_module" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,7 +66,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="DatabaseDriversLRU" value="sqlite" />
+    <property name="DatabaseDriversLRU" value="sqlite&#10;postgresql" />
     <property name="Downloaded.Files.Path.Enabled" value="false" />
     <property name="Repository.Attach.Annotations" value="false" />
     <property name="Repository.Attach.JavaDocs" value="false" />
@@ -271,8 +249,26 @@
       <workItem from="1589302444130" duration="191000" />
       <workItem from="1589316487622" duration="701000" />
       <workItem from="1590428165166" duration="199000" />
-      <workItem from="1590428370372" duration="1182000" />
+      <workItem from="1590428370372" duration="2864000" />
+      <workItem from="1590612762052" duration="217000" />
+      <workItem from="1590667310750" duration="204000" />
+      <workItem from="1590924169686" duration="13000" />
+      <workItem from="1591186195779" duration="150000" />
+      <workItem from="1591292888085" duration="159000" />
+      <workItem from="1591819830170" duration="299000" />
+      <workItem from="1592038466310" duration="46000" />
+      <workItem from="1595181509393" duration="118000" />
+      <workItem from="1595181661615" duration="39000" />
+      <workItem from="1605363917969" duration="861000" />
     </task>
+    <task id="LOCAL-00001" summary="25.05.2020">
+      <created>1590431566973</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1590431566973</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -281,116 +277,29 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="сборка клиента" />
     <MESSAGE value="demo-version #1" />
-    <option name="LAST_COMMIT_MESSAGE" value="demo-version #1" />
+    <MESSAGE value="25.05.2020" />
+    <option name="LAST_COMMIT_MESSAGE" value="25.05.2020" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="360" y="70" key="#Deployment" timestamp="1588441893012">
+    <state width="1493" height="168" key="GridCell.Tab.0.bottom" timestamp="1605364880968">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="360" y="70" key="#Deployment/0.0.1536.824@0.0.1536.824" timestamp="1588441893012" />
-    <state x="361" y="70" key="#Project_Structure" timestamp="1585818510719">
+    <state width="1493" height="168" key="GridCell.Tab.0.bottom/1920.0.1366.718/0.0.1536.824@0.0.1536.824" timestamp="1605364880968" />
+    <state width="1493" height="168" key="GridCell.Tab.0.center" timestamp="1605364880968">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="70" key="#Project_Structure/0.0.1536.824@0.0.1536.824" timestamp="1585818510719" />
-    <state x="361" y="70" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1586854956744">
+    <state width="1493" height="168" key="GridCell.Tab.0.center/1920.0.1366.718/0.0.1536.824@0.0.1536.824" timestamp="1605364880968" />
+    <state width="1493" height="168" key="GridCell.Tab.0.left" timestamp="1605364880968">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="70" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1586854956744" />
-    <state x="524" y="215" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1588441862463">
+    <state width="1493" height="168" key="GridCell.Tab.0.left/1920.0.1366.718/0.0.1536.824@0.0.1536.824" timestamp="1605364880968" />
+    <state width="1493" height="168" key="GridCell.Tab.0.right" timestamp="1605364880968">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="524" y="215" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824@0.0.1536.824" timestamp="1588441862463" />
-    <state x="574" y="121" key="#com.intellij.ide.util.MemberChooser" timestamp="1588432437177">
+    <state width="1493" height="168" key="GridCell.Tab.0.right/1920.0.1366.718/0.0.1536.824@0.0.1536.824" timestamp="1605364880968" />
+    <state x="465" y="236" key="com.intellij.ide.util.TipDialog" timestamp="1605364940999">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="574" y="121" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824@0.0.1536.824" timestamp="1588432437177" />
-    <state x="499" y="159" key="#com.intellij.refactoring.typeMigration.ui.FailedConversionsDialog" timestamp="1586893492322">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="499" y="159" key="#com.intellij.refactoring.typeMigration.ui.FailedConversionsDialog/0.0.1536.824@0.0.1536.824" timestamp="1586893492322" />
-    <state x="130" y="209" key="#xdebugger.evaluate" timestamp="1586608305222">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="130" y="209" key="#xdebugger.evaluate/0.0.1536.824@0.0.1536.824" timestamp="1586608305222" />
-    <state x="334" y="5" width="1062" height="814" key="CommitChangelistDialog2" timestamp="1590431515422">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="334" y="5" width="1062" height="814" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1590431515422" />
-    <state width="254" height="195" key="DatabaseViewActions_Filter" timestamp="1586168690340">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="254" height="195" key="DatabaseViewActions_Filter/0.0.1536.824@0.0.1536.824" timestamp="1586168690340" />
-    <state x="549" y="165" key="FileChooserDialogImpl" timestamp="1586178113968">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="549" y="165" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1586178113968" />
-    <state width="1493" height="168" key="GridCell.Tab.0.bottom" timestamp="1590431515508">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1493" height="168" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1590431515508" />
-    <state width="1493" height="168" key="GridCell.Tab.0.center" timestamp="1590431515508">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1493" height="168" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1590431515508" />
-    <state width="1493" height="168" key="GridCell.Tab.0.left" timestamp="1590431515508">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1493" height="168" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1590431515508" />
-    <state width="1493" height="168" key="GridCell.Tab.0.right" timestamp="1590431515508">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1493" height="168" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1590431515508" />
-    <state width="1493" height="227" key="GridCell.Tab.1.bottom" timestamp="1588508362393">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1493" height="227" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1588508362393" />
-    <state width="1493" height="227" key="GridCell.Tab.1.center" timestamp="1588508362393">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1493" height="227" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1588508362393" />
-    <state width="1493" height="227" key="GridCell.Tab.1.left" timestamp="1588508362393">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1493" height="227" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1588508362393" />
-    <state width="1493" height="227" key="GridCell.Tab.1.right" timestamp="1588508362393">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1493" height="227" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1588508362393" />
-    <state x="249" y="0" key="SettingsEditor" timestamp="1586621598692">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="249" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1586621598692" />
-    <state x="490" y="154" width="540" height="524" key="StructurePopup" timestamp="1589211060479">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="490" y="154" width="540" height="524" key="StructurePopup/0.0.1536.824@0.0.1536.824" timestamp="1589211060479" />
-    <state x="849" y="236" key="com.intellij.ide.util.TipDialog" timestamp="1590428170236">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="849" y="236" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1590428170236" />
-    <state x="498" y="305" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1586168609447">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="498" y="305" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.0.1536.824@0.0.1536.824" timestamp="1586168609447" />
-    <state x="529" y="189" key="extract.method.dialog" timestamp="1587939125028">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="529" y="189" key="extract.method.dialog/0.0.1536.824@0.0.1536.824" timestamp="1587939125028" />
-    <state x="278" y="48" key="new project wizard" timestamp="1588499297026">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="278" y="48" key="new project wizard/0.0.1536.824@0.0.1536.824" timestamp="1588499297026" />
-    <state x="475" y="40" key="refactoring.ChangeSignatureDialog" timestamp="1588168674928">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="475" y="40" key="refactoring.ChangeSignatureDialog/0.0.1536.824@0.0.1536.824" timestamp="1588168674928" />
-    <state x="425" y="187" key="run.anything.popup" timestamp="1588410832919">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="425" y="187" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1588410832919" />
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1588432555435">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1588432555435" />
+    <state x="465" y="236" key="com.intellij.ide.util.TipDialog/1920.0.1366.718/0.0.1536.824@0.0.1536.824" timestamp="1605364940999" />
   </component>
 </project>

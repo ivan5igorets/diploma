@@ -143,7 +143,6 @@ public class Server implements TCPConnectionListener{
         return false;
     }
 
-
     private void sendToUser(String recipient, String msg) {
         TCPConnection tcpConnection = connection.get(recipient);
 
